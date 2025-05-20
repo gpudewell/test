@@ -88,27 +88,76 @@ nav ul li a.active {
     /* text-decoration: underline; Removed, background indicates active state */
 }
 
-/* Hero Section (Used on multiple pages for main headlines) */
+/* Hero Section Styling */
+/* Assuming .hero on index.html is the target. If other pages use .hero and need different BGs,
+   a more specific selector for index.html (e.g., body.home .hero or an ID #home-hero) would be needed.
+   For now, applying to general .hero as per subtask allowance. */
 .hero {
-    background-color: #e9ecef; /* Slightly different light gray for hero, or use body bg #f4f4f4 */
-    padding: 4em 2em;
-    text-align: center;
+    background-color: #E5D9CE; /* New background color for hero */
+    padding: 4em 2em; /* Existing padding */
+    text-align: center; /* Existing text-align */
 }
 
 .hero h1 {
-    font-size: 3em;
-    margin-bottom: 0.5em;
-    /* color: #333333; Inherited */
+    font-size: 3em; /* Existing font-size */
+    margin-bottom: 0.5em; /* Existing margin */
+    color: #333333; /* Ensure text color has good contrast, #333 is fine */
 }
 
-.hero p { /* Specific to index.html hero */
-    font-size: 1.2em;
-    margin-bottom: 1.5em;
-    color: #555;
+.hero p {
+    font-size: 1.2em; /* Existing font-size */
+    margin-bottom: 1.5em; /* Existing margin */
+    color: #555555; /* Ensure text color has good contrast, #555 is fine */
 }
 
-/* Hero button will inherit global button styles */
-/* .hero button { ... } */
+/* Container for hero buttons on index.html */
+.hero-buttons {
+    margin-top: 20px; /* Space above the buttons */
+    text-align: center; /* Ensure buttons are centered if they are inline-block */
+}
+
+/* Base style for hero buttons */
+.hero-button {
+    padding: 12px 24px;
+    margin: 0 10px; /* Spacing between buttons */
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
+    font-weight: bold;
+    font-family: 'Open Sans', 'Lato', sans-serif; /* Ensure font consistency */
+    font-size: 1em;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border: 2px solid transparent; /* Base border for smooth transition on secondary */
+}
+
+/* Primary hero button (Shop Collection) */
+.hero-button.primary {
+    background-color: #915930;
+    color: #ffffff;
+    border-color: #915930; /* Match background or make transparent if no border desired */
+}
+
+.hero-button.primary:hover {
+    background-color: #7a4a27; /* Darker shade for hover */
+    color: #ffffff;
+    border-color: #7a4a27;
+    text-decoration: none; /* Remove underline on hover for buttons */
+}
+
+/* Secondary hero button (Our Process) */
+.hero-button.secondary {
+    background-color: #ffffff;
+    color: #915930;
+    border: 2px solid #915930;
+}
+
+.hero-button.secondary:hover {
+    background-color: #f8f9fa; /* Slightly different background on hover */
+    color: #7a4a27; /* Darker text/border on hover */
+    border-color: #7a4a27;
+    text-decoration: none; /* Remove underline on hover for buttons */
+}
+
 
 /* Generic Content Sections */
 section {
@@ -119,6 +168,13 @@ section {
     border-radius: 5px; /* Optional: slight rounding for sections */
     box-shadow: 0 0 10px rgba(0,0,0,0.05); /* Optional: subtle shadow for sections */
 }
+
+/* Exclude .hero from generic section styling if it has its own distinct background */
+section.hero {
+    background-color: #E5D9CE; /* Overriding generic section white background */
+    box-shadow: none; /* Hero typically doesn't have a card shadow */
+}
+
 
 section h2 {
     /* color: #333333; Inherited */
