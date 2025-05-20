@@ -1,15 +1,53 @@
 /* Global / Basic Styling */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Open Sans', 'Lato', sans-serif; /* Updated font */
     margin: 0;
     line-height: 1.6;
-    color: #333;
+    background-color: #f4f4f4; /* Updated background color */
+    color: #333333; /* Updated default text color */
 }
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif; /* Updated heading font */
+    color: #333333; /* Ensure headings also use the dark gray, can be more specific if needed */
+}
+
+/* Links */
+a {
+    color: #007bff; /* Primary/accent color for links */
+    text-decoration: none; /* Remove underline by default */
+}
+
+a:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+/* Buttons - General Styling */
+button,
+input[type="submit"], /* Apply to form submit buttons as well */
+.button-link /* Class for anchor tags styled as buttons */ {
+    background-color: #007bff; /* Primary/accent color */
+    color: #ffffff; /* White text */
+    padding: 10px 15px; /* Updated padding */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 1em; /* Consistent font size */
+    font-family: 'Open Sans', 'Lato', sans-serif; /* Match body font */
+    transition: background-color 0.3s ease;
+}
+
+button:hover,
+input[type="submit"]:hover,
+.button-link:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
 
 /* Navigation Bar */
 nav {
-    background-color: #333;
-    color: white;
+    background-color: #343a40; /* Dark gray/charcoal background */
     padding: 1em 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -28,29 +66,31 @@ nav ul li {
 }
 
 nav ul li a {
-    text-decoration: none;
-    color: white;
+    text-decoration: none; /* Already set globally for 'a', but good for specificity */
+    color: #f8f9fa; /* Light/off-white link color */
     font-weight: bold;
     padding: 0.5em 1em;
     border-radius: 4px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Override general link hover for nav links if needed, but current hover is background change */
 nav ul li a:hover {
     background-color: #555;
+    text-decoration: none; /* Ensure no underline on nav link hover */
+    color: #ffffff; /* Slightly brighter on hover */
 }
 
-nav ul li a.active { /* Style for active nav link */
+nav ul li a.active {
+    background-color: #007bff; /* Blue background for active link */
+    color: #f8f9fa; /* Light/off-white text for active link */
     font-weight: bold;
-    text-decoration: underline;
-    /* Example: Or use a different background or color if preferred */
-    /* background-color: #007bff; */
-    /* color: #fff; */
+    /* text-decoration: underline; Removed, background indicates active state */
 }
 
 /* Hero Section (Used on multiple pages for main headlines) */
 .hero {
-    background-color: #f4f4f4;
+    background-color: #e9ecef; /* Slightly different light gray for hero, or use body bg #f4f4f4 */
     padding: 4em 2em;
     text-align: center;
 }
@@ -58,7 +98,7 @@ nav ul li a.active { /* Style for active nav link */
 .hero h1 {
     font-size: 3em;
     margin-bottom: 0.5em;
-    color: #333;
+    /* color: #333333; Inherited */
 }
 
 .hero p { /* Specific to index.html hero */
@@ -67,30 +107,21 @@ nav ul li a.active { /* Style for active nav link */
     color: #555;
 }
 
-.hero button { /* Specific to index.html hero button */
-    padding: 0.8em 2em;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 1em;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.hero button:hover { /* Specific to index.html hero button */
-    background-color: #0056b3;
-}
+/* Hero button will inherit global button styles */
+/* .hero button { ... } */
 
 /* Generic Content Sections */
-section { /* Basic styling for content sections */
-    padding: 2em;
-    margin: 20px auto;
+section {
+    padding: 2em; /* Sufficient padding */
+    margin: 20px auto; /* Sufficient margin */
     max-width: 960px;
+    background-color: #ffffff; /* White background for content sections for contrast with body */
+    border-radius: 5px; /* Optional: slight rounding for sections */
+    box-shadow: 0 0 10px rgba(0,0,0,0.05); /* Optional: subtle shadow for sections */
 }
 
-section h2 { /* Styling for subheadings within sections */
-    color: #333;
+section h2 {
+    /* color: #333333; Inherited */
     margin-bottom: 1em;
 }
 
@@ -99,117 +130,112 @@ section h2 { /* Styling for subheadings within sections */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    padding: 1em 0; /* Adjusted padding as section already has padding */
+    padding: 1em 0;
+    background-color: transparent; /* products section doesn't need its own bg if items have it */
+    box-shadow: none; /* No shadow for the container if items have it */
 }
 
 .product-item {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 1em;
+    border: 1px solid #ced4da; /* Light gray border, consistent with inputs */
+    border-radius: 5px; /* Consistent border-radius */
+    padding: 1.5em; /* Increased padding */
     margin: 1em;
-    width: calc(33.333% - 2em); /* 3 items per row, accounts for margin */
-    min-width: 250px; /* Minimum width before wrapping */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: calc(33.333% - 2em);
+    min-width: 250px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Softer shadow */
     text-align: center;
-    background-color: #fff;
+    background-color: #ffffff; /* Ensure product items are white */
 }
 
-.product-item .img_placeholder { /* Renamed from product-item img_placeholder for clarity */
+.product-item .img_placeholder {
     width: 100%;
     max-width: 200px;
     height: 150px;
-    background-color: #eee;
+    background-color: #e9ecef; /* Consistent light gray */
     text-align: center;
-    line-height: 150px; /* Vertically center text if any */
-    margin: 0 auto 1em auto; /* Center the placeholder */
-    display: block; /* Ensure it behaves as a block for centering */
+    line-height: 150px;
+    margin: 0 auto 1em auto;
+    display: block;
+    border-radius: 4px; /* Optional rounding for placeholder */
 }
 
 .product-item h3 {
     font-size: 1.5em;
     margin-bottom: 0.5em;
-    color: #333;
+    /* color: #333333; Inherited */
 }
 
 .product-item p { /* Used for price */
     font-size: 1.2em;
-    color: #555; /* Slightly lighter than h3 */
+    color: #007bff; /* Price in accent color */
+    font-weight: bold;
     margin-bottom: 1em;
 }
 
-.product-item button {
-    padding: 0.5em 1.5em;
-    background-color: #28a745; /* Green for "Add to Cart" */
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 1em;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+/* product-item button will inherit global button styles */
+/* .product-item button { ... } */
 
-.product-item button:hover {
-    background-color: #218838; /* Darker green on hover */
-}
 
 /* Contact Page Specific Styles */
-.contact-form {
+.contact-form { /* This is a section, so it gets base section styling */
     max-width: 600px;
-    margin: 0 auto 20px auto; /* section already has top/bottom margin */
-    padding: 2em;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    background-color: #fff;
+    margin: 20px auto; /* Keep auto margins for centering */
+    /* padding: 2em; Inherited from section */
+    /* border: 1px solid #ddd; Overridden by section's box-shadow or remove if redundant */
+    /* border-radius: 5px; Inherited */
+    /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); Inherited */
+    /* background-color: #fff; Inherited */
 }
+
+.contact-form form { /* Style the form element itself if needed, for now, rely on section */
+    padding: 1em; /* Add some padding inside the form if section has bg */
+}
+
 
 .contact-form label {
     display: block;
     margin-bottom: 0.5em;
     font-weight: bold;
-    color: #333;
+    /* color: #333333; Inherited */
 }
 
 .contact-form input[type="text"],
 .contact-form input[type="email"],
 .contact-form textarea {
     width: 100%;
-    padding: 0.8em;
+    padding: 10px; /* Updated padding */
     margin-bottom: 1em;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #ced4da; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
     box-sizing: border-box;
-    font-family: inherit; /* Ensure form elements inherit body font */
+    font-family: 'Open Sans', 'Lato', sans-serif; /* Match body font */
     font-size: 1em;
+    background-color: #fff; /* Ensure input background is white */
+    color: #333333; /* Ensure input text color is dark gray */
 }
+
+.contact-form input[type="text"]::placeholder,
+.contact-form input[type="email"]::placeholder,
+.contact-form textarea::placeholder {
+    color: #6c757d; /* Placeholder text color */
+}
+
 
 .contact-form textarea {
     min-height: 150px;
-    resize: vertical; /* Allow vertical resizing */
+    resize: vertical;
 }
 
-.contact-form button[type="submit"] {
-    padding: 0.8em 2em;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 1em;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+/* contact-form button[type="submit"] will inherit global button styles */
+/* .contact-form button[type="submit"] { ... } */
 
-.contact-form button[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-.contact-info {
+.contact-info { /* This is a section */
     text-align: center;
-    margin-top: 0; /* section provides margin */
-    padding: 1em 0; /* Adjusted padding */
+    /* margin-top: 0; Inherited from section */
+    /* padding: 1em 0; Inherited from section */
 }
 
-.contact-info h2 { /* Already styled by generic section h2 */
+.contact-info h2 {
     margin-bottom: 0.5em;
 }
 
@@ -220,34 +246,34 @@ section h2 { /* Styling for subheadings within sections */
 }
 
 /* About Page Specific Styles */
-.team-section {
-    margin-top: 0; /* section provides margin */
-    padding: 2em;
-    background-color: #f9f9f9;
-    border-radius: 5px;
+.team-section { /* This is a section */
+    /* margin-top: 0; Inherited */
+    /* padding: 2em; Inherited */
+    background-color: #f9f9f9; /* Keep slightly different bg for team if desired, or align with section bg */
+    /* border-radius: 5px; Inherited */
 }
 
-.team-section h2 { /* Already styled by generic section h2, but can be overridden if needed */
+.team-section h2 {
     text-align: center;
     margin-bottom: 1em;
 }
 
 .team-member {
     text-align: center;
-    margin-bottom: 1.5em; /* Increased margin for better separation */
+    margin-bottom: 1.5em;
 }
 
-.team-member b { /* For team member name */
+.team-member b {
     display: block;
-    font-size: 1.3em; /* Slightly larger name */
-    color: #333;
+    font-size: 1.3em;
+    /* color: #333333; Inherited */
     margin-bottom: 0.25em;
 }
 
-.team-member p:last-child { /* For team member description */
+.team-member p:last-child {
     font-size: 1em;
     color: #555;
-    max-width: 400px; /* Prevent description from being too wide */
+    max-width: 400px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -255,18 +281,18 @@ section h2 { /* Styling for subheadings within sections */
 
 /* Footer */
 footer {
-    background-color: #333;
-    color: white;
+    background-color: #343a40; /* Dark gray/charcoal background */
+    color: #f8f9fa; /* Light/off-white text */
     text-align: center;
     padding: 2em 0;
-    /* position: relative; */ /* Removed as it wasn't strictly necessary for sticky footer and might cause issues */
-    /* bottom: 0; */ /* Removed */
     width: 100%;
-    margin-top: auto; /* Helps push footer down if content is short, works with flex body */
+    margin-top: auto; /* Helps push footer down if content is short */
 }
-
-/* Utility for body to help push footer down if content is short */
-/* This would require body to be display: flex; flex-direction: column; min-height: 100vh; */
-/* For now, keeping it simple as it's not explicitly requested */
-/* body { display: flex; flex-direction: column; min-height: 100vh; } */
-/* main { flex-grow: 1; } */
+footer a { /* Ensure footer links are also light colored */
+    color: #f8f9fa;
+    text-decoration: underline; /* Underline footer links for clarity */
+}
+footer a:hover {
+    color: #007bff; /* Accent color on hover for footer links */
+    text-decoration: none;
+}
