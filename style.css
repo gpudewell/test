@@ -13,6 +13,17 @@ h1, h2, h3, h4, h5, h6 {
     color: #333333; /* Ensure headings also use the dark gray, can be more specific if needed */
 }
 
+/* Utility Classes / Layout Helpers */
+.content-wrapper {
+    max-width: 1140px; /* A common width for content, can be adjusted */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px; /* For spacing from the edges of this container */
+    padding-right: 15px; /* For spacing from the edges of this container */
+    width: 100%; /* Ensures it takes up available width up to max-width */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
 /* Links */
 a {
     color: #007bff; /* Primary/accent color for links */
@@ -90,39 +101,48 @@ nav ul li a.active {
 /* Hero Section Styling */
 .hero { /* General class for hero sections on other pages if any */
     background-color: #E5D9CE;
-    text-align: center; /* Default for other hero sections */
+    text-align: center; /* Default for other hero sections (shop, contact, about) */
 }
 
 /* Specific styling for the hero section on the homepage */
 #home-hero-section {
     text-align: left; /* Override general .hero text-align: center */
-    padding-left: 4em; /* Updated from 2em */
-    padding-right: 2em; /* Remains 2em */
-    padding-top: 5.2em; /* Added, was effectively 4em via section.hero */
-    padding-bottom: 5.2em; /* Added, was effectively 4em via section.hero */
-    /* background-color is inherited from .hero or section.hero */
-    /* Other full-width properties are inherited from section.hero */
+    padding-left: 4em;
+    padding-right: 2em;
+    padding-top: 5.2em;
+    padding-bottom: 5.2em;
 }
 
 #home-hero-section h1,
 #home-hero-section p {
-    text-align: left; /* Explicitly set for children if needed, though inherited usually works */
+    text-align: left;
 }
 
 #home-hero-section .hero-buttons {
     margin-top: 20px;
-    text-align: left; /* Override .hero .hero-buttons text-align: center */
+    text-align: left;
 }
 
-/* General .hero h1 and .hero p if needed for other pages,
-   but #home-hero-section h1/p will take precedence for the homepage hero */
+/* General .hero h1 and .hero p styling */
 .hero h1 {
     font-size: 3em;
     margin-bottom: 0.5em;
     color: #333333;
 }
 
-.hero p {
+/* Center H1s in hero sections that are NOT the homepage hero (shop, contact, about) */
+/* This relies on .hero having text-align:center and .content-wrapper not overriding it for block children like h1 */
+/* Forcing H1 itself to be centered if it's a block: */
+.hero .content-wrapper h1 {
+    text-align: center;
+}
+/* Ensure #home-hero-section h1 remains left-aligned due to higher specificity */
+#home-hero-section h1 {
+    text-align: left;
+}
+
+
+.hero p { /* This applies to the <p> in #home-hero-section only, as other .hero sections don't have <p> */
     font-size: 1.2em;
     margin-bottom: 1.5em;
     color: #555555;
@@ -130,7 +150,7 @@ nav ul li a.active {
 
 .hero-button {
     padding: 12px 24px;
-    margin: 0 10px 0 0; /* Adjust margin for left alignment, remove left margin for the first button */
+    margin: 0 10px 0 0;
     text-decoration: none;
     display: inline-block;
     border-radius: 5px;
@@ -142,7 +162,7 @@ nav ul li a.active {
 }
 
 #home-hero-section .hero-button:first-child {
-    margin-left: 0; /* Ensure the first button aligns to the very left of the padded container */
+    margin-left: 0;
 }
 
 
@@ -181,8 +201,8 @@ section {
     padding-right: 0;
     margin-left: 0;
     margin-right: 0;
-    margin-top: 0; /* Removed vertical margin */
-    margin-bottom: 0; /* Removed vertical margin */
+    margin-top: 0;
+    margin-bottom: 0;
     max-width: none;
     background-color: #ffffff;
     border-radius: 0;
@@ -191,19 +211,17 @@ section {
     box-sizing: border-box;
 }
 
-/* Specific styling for section.hero for full-width & NO VERTICAL MARGINS */
-/* This rule applies to all elements with class .hero that are also sections */
 section.hero {
-    padding-top: 4em; /* Default vertical padding for other .hero sections */
-    padding-bottom: 4em; /* Default vertical padding for other .hero sections */
-    padding-left: 0; /* Base for full-width, overridden by #home-hero-section for specific padding */
-    padding-right: 0; /* Base for full-width, overridden by #home-hero-section for specific padding */
+    padding-top: 4em;
+    padding-bottom: 4em;
+    padding-left: 0;
+    padding-right: 0;
     margin-left: 0;
     margin-right: 0;
-    margin-top: 0; /* Hero section often is at the very top, already 0 */
-    margin-bottom: 0; /* Removed space below hero */
+    margin-top: 0;
+    margin-bottom: 0;
     max-width: none;
-    background-color: #E5D9CE; /* Specific background */
+    background-color: #E5D9CE;
     box-shadow: none;
     border-radius: 0;
     width: 100%;
@@ -213,27 +231,40 @@ section.hero {
 
 section h2 {
     margin-bottom: 1em;
+    /* To center h2 within a .content-wrapper if needed:
+       .content-wrapper h2 { text-align: center; }
+       Or apply text-align:center to the specific .content-wrapper or section.
+    */
 }
 
 /* Shop Page Specific Styles */
-/* .products is a <section> and will inherit full-width & no vertical margins from 'section' */
 .products {
-    padding-top: 1em; /* Keep specific vertical padding */
-    padding-bottom: 1em; /* Keep specific vertical padding */
-    background-color: transparent; /* Keep transparent, body bg will show */
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background-color: transparent;
+}
+
+/* Apply flex properties to the content-wrapper within .products section */
+.products .content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    /* padding-left and padding-right from .content-wrapper will provide edge spacing for the flex items */
 }
 
 .product-item {
     border: 1px solid #ced4da;
     border-radius: 5px;
     padding: 1.5em;
-    margin: 1em; /* This margin is for items within the section, not between sections */
-    width: calc(33.333% - 2em);
+    margin: 1em; /* This margin is for items within the flex container */
+    width: calc(33.333% - 2em - 30px); /* Adjust width considering wrapper padding (15px*2=30px) and item margin */
     min-width: 250px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     text-align: center;
     background-color: #ffffff;
+    box-sizing: border-box; /* Add box-sizing for more predictable width calculation */
 }
+
 
 .product-item .img_placeholder {
     width: 100%;
@@ -260,15 +291,14 @@ section h2 {
 }
 
 /* Contact Page Specific Styles */
-/* .contact-form is a <section> and will inherit full-width & no vertical margins */
 .contact-form {
-    /* Styles related to margin/padding are handled by 'section' rule */
+    /* section styles apply */
 }
 
 .contact-form form {
-    padding: 1em;
+    padding: 1em; /* Padding inside the form element, around fields */
     max-width: 600px;
-    margin: 0 auto; /* Center the form within the full-width section */
+    margin: 0 auto; /* Center the form within the .content-wrapper */
 }
 
 
@@ -304,7 +334,6 @@ section h2 {
     resize: vertical;
 }
 
-/* .contact-info is a <section> and will inherit full-width & no vertical margins */
 .contact-info {
     text-align: center;
 }
@@ -320,20 +349,20 @@ section h2 {
 }
 
 /* About Page Specific Styles */
-/* .team-section is a <section> and will inherit full-width & no vertical margins */
 .team-section {
-    background-color: #f9f9f9; /* Keep specific background for this full-width band */
+    background-color: #f9f9f9;
     text-align: center;
 }
 
-.team-section h2 {
-    text-align: center;
+.team-section h2 { /* This will be inside .content-wrapper */
+    text-align: center; /* Ensure it's centered if not by parent */
     margin-bottom: 1em;
 }
 
 .team-member {
     text-align: center;
     margin-bottom: 1.5em;
+    /* display: inline-block; width: 30%; if a row layout was desired within content-wrapper */
 }
 
 .team-member b {
@@ -358,7 +387,7 @@ footer {
     text-align: center;
     padding: 2em 0;
     width: 100%;
-    margin-top: auto; /* This helps push footer down, but with no section margins, it might directly touch last section */
+    margin-top: auto;
     box-sizing: border-box;
 }
 footer a {
