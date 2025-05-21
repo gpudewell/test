@@ -123,6 +123,32 @@ nav ul li a.active {
     text-align: left;
 }
 
+/* Two-column layout for home hero section */
+#home-hero-section .hero-content-split {
+    display: flex;
+    align-items: center; /* Vertically align items if columns have different natural heights */
+    gap: 2em; /* Spacing between the two columns */
+}
+
+#home-hero-section .hero-image-column {
+    flex-basis: 40%;
+    /* max-width: 40%; If using flex-grow/shrink instead of basis */
+}
+
+#home-hero-section .hero-text-column {
+    flex-basis: 55%;
+    /* max-width: 55%; If using flex-grow/shrink instead of basis */
+}
+
+/* Placeholder styling is inline in HTML for now. If it were a real image: */
+/*
+#home-hero-section .hero-image-column img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+*/
+
 /* General .hero h1 and .hero p styling */
 .hero h1 {
     font-size: 3em;
@@ -131,13 +157,11 @@ nav ul li a.active {
 }
 
 /* Center H1s in hero sections that are NOT the homepage hero (shop, contact, about) */
-/* This relies on .hero having text-align:center and .content-wrapper not overriding it for block children like h1 */
-/* Forcing H1 itself to be centered if it's a block: */
 .hero .content-wrapper h1 {
     text-align: center;
 }
 /* Ensure #home-hero-section h1 remains left-aligned due to higher specificity */
-#home-hero-section h1 {
+#home-hero-section h1 { /* This rule already exists, confirming its precedence */
     text-align: left;
 }
 
@@ -231,10 +255,6 @@ section.hero {
 
 section h2 {
     margin-bottom: 1em;
-    /* To center h2 within a .content-wrapper if needed:
-       .content-wrapper h2 { text-align: center; }
-       Or apply text-align:center to the specific .content-wrapper or section.
-    */
 }
 
 /* Shop Page Specific Styles */
@@ -244,25 +264,23 @@ section h2 {
     background-color: transparent;
 }
 
-/* Apply flex properties to the content-wrapper within .products section */
 .products .content-wrapper {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    /* padding-left and padding-right from .content-wrapper will provide edge spacing for the flex items */
 }
 
 .product-item {
     border: 1px solid #ced4da;
     border-radius: 5px;
     padding: 1.5em;
-    margin: 1em; /* This margin is for items within the flex container */
-    width: calc(33.333% - 2em - 30px); /* Adjust width considering wrapper padding (15px*2=30px) and item margin */
+    margin: 1em;
+    width: calc(33.333% - 2em - 30px);
     min-width: 250px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     text-align: center;
     background-color: #ffffff;
-    box-sizing: border-box; /* Add box-sizing for more predictable width calculation */
+    box-sizing: border-box;
 }
 
 
@@ -296,9 +314,9 @@ section h2 {
 }
 
 .contact-form form {
-    padding: 1em; /* Padding inside the form element, around fields */
+    padding: 1em;
     max-width: 600px;
-    margin: 0 auto; /* Center the form within the .content-wrapper */
+    margin: 0 auto;
 }
 
 
@@ -354,15 +372,14 @@ section h2 {
     text-align: center;
 }
 
-.team-section h2 { /* This will be inside .content-wrapper */
-    text-align: center; /* Ensure it's centered if not by parent */
+.team-section h2 {
+    text-align: center;
     margin-bottom: 1em;
 }
 
 .team-member {
     text-align: center;
     margin-bottom: 1.5em;
-    /* display: inline-block; width: 30%; if a row layout was desired within content-wrapper */
 }
 
 .team-member b {
@@ -397,4 +414,38 @@ footer a {
 footer a:hover {
     color: #007bff;
     text-decoration: none;
+}
+
+/* Responsive adjustments for home hero section */
+@media (max-width: 768px) {
+    #home-hero-section .hero-content-split {
+        flex-direction: column;
+        gap: 1.5em; /* Adjust gap for stacked layout */
+    }
+
+    #home-hero-section .hero-image-column,
+    #home-hero-section .hero-text-column {
+        flex-basis: 100%; /* Each column takes full width when stacked */
+        width: 100%; /* Explicit width for stacking */
+    }
+
+    #home-hero-section {
+        padding-left: 1.5em; /* Adjust overall section padding for mobile */
+        padding-right: 1.5em;
+        padding-top: 3em;    /* Slightly reduce vertical padding for mobile */
+        padding-bottom: 3em; /* Slightly reduce vertical padding for mobile */
+    }
+
+    /* Keep text and buttons left-aligned in the text column even when stacked, as per current design.
+       If centering was desired:
+    #home-hero-section .hero-text-column {
+        text-align: center;
+    }
+    #home-hero-section .hero-buttons {
+        text-align: center;
+    }
+    #home-hero-section .hero-button:first-child {
+        margin-left: 10px; // Re-add margin if buttons are centered
+    }
+    */
 }
