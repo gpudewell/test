@@ -96,9 +96,12 @@ nav ul li a.active {
 /* Specific styling for the hero section on the homepage */
 #home-hero-section {
     text-align: left; /* Override general .hero text-align: center */
-    padding-left: 2em; /* Add horizontal padding back for content */
-    padding-right: 2em; /* Add horizontal padding back for content */
-    /* Vertical padding is inherited from section.hero */
+    padding-left: 4em; /* Updated from 2em */
+    padding-right: 2em; /* Remains 2em */
+    padding-top: 5.2em; /* Added, was effectively 4em via section.hero */
+    padding-bottom: 5.2em; /* Added, was effectively 4em via section.hero */
+    /* background-color is inherited from .hero or section.hero */
+    /* Other full-width properties are inherited from section.hero */
 }
 
 #home-hero-section h1,
@@ -125,10 +128,6 @@ nav ul li a.active {
     color: #555555;
 }
 
-/* This rule was for .hero .hero-buttons, now specific to #home-hero-section */
-/* .hero-buttons { ... } */
-
-
 .hero-button {
     padding: 12px 24px;
     margin: 0 10px 0 0; /* Adjust margin for left alignment, remove left margin for the first button */
@@ -142,8 +141,6 @@ nav ul li a.active {
     border: 2px solid transparent;
 }
 
-/* If only two buttons and they should stack on smaller screens, or other specific alignment,
-   flexbox on .hero-buttons might be better. For simple left align, text-align: left is fine. */
 #home-hero-section .hero-button:first-child {
     margin-left: 0; /* Ensure the first button aligns to the very left of the padded container */
 }
@@ -197,8 +194,8 @@ section {
 /* Specific styling for section.hero for full-width & NO VERTICAL MARGINS */
 /* This rule applies to all elements with class .hero that are also sections */
 section.hero {
-    padding-top: 4em; /* Retain specific vertical padding */
-    padding-bottom: 4em; /* Retain specific vertical padding */
+    padding-top: 4em; /* Default vertical padding for other .hero sections */
+    padding-bottom: 4em; /* Default vertical padding for other .hero sections */
     padding-left: 0; /* Base for full-width, overridden by #home-hero-section for specific padding */
     padding-right: 0; /* Base for full-width, overridden by #home-hero-section for specific padding */
     margin-left: 0;
