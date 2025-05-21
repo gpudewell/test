@@ -48,17 +48,18 @@ input[type="submit"]:hover,
 /* Navigation Bar */
 nav {
     background-color: #343a40; /* Dark gray/charcoal background */
-    padding: 1em 0;
+    padding: 1em 0; /* Vertical padding, horizontal padding removed for full-width effect */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Navigation content remains centered */
 nav ul {
     list-style-type: none;
     padding: 0;
-    margin: 0 auto;
+    margin: 0 auto; /* This centers the ul within the full-width nav */
     display: flex;
     justify-content: center;
-    max-width: 960px;
+    max-width: 960px; /* Content within nav is constrained */
 }
 
 nav ul li {
@@ -66,85 +67,101 @@ nav ul li {
 }
 
 nav ul li a {
-    text-decoration: none; /* Already set globally for 'a', but good for specificity */
-    color: #f8f9fa; /* Light/off-white link color */
+    text-decoration: none;
+    color: #f8f9fa;
     font-weight: bold;
     padding: 0.5em 1em;
     border-radius: 4px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Override general link hover for nav links if needed, but current hover is background change */
 nav ul li a:hover {
     background-color: #555;
-    text-decoration: none; /* Ensure no underline on nav link hover */
-    color: #ffffff; /* Slightly brighter on hover */
+    text-decoration: none;
+    color: #ffffff;
 }
 
 nav ul li a.active {
-    background-color: #007bff; /* Blue background for active link */
-    color: #f8f9fa; /* Light/off-white text for active link */
+    background-color: #007bff;
+    color: #f8f9fa;
     font-weight: bold;
-    /* text-decoration: underline; Removed, background indicates active state */
 }
 
 /* Hero Section Styling */
-/* Assuming .hero on index.html is the target. If other pages use .hero and need different BGs,
-   a more specific selector for index.html (e.g., body.home .hero or an ID #home-hero) would be needed.
-   For now, applying to general .hero as per subtask allowance. */
-.hero {
-    background-color: #E5D9CE; /* New background color for hero */
-    padding: 4em 2em; /* Existing padding */
-    text-align: center; /* Existing text-align */
+.hero { /* General class for hero sections on other pages if any */
+    background-color: #E5D9CE;
+    text-align: center; /* Default for other hero sections */
 }
 
+/* Specific styling for the hero section on the homepage */
+#home-hero-section {
+    text-align: left; /* Override general .hero text-align: center */
+    padding-left: 2em; /* Add horizontal padding back for content */
+    padding-right: 2em; /* Add horizontal padding back for content */
+    /* Vertical padding is inherited from section.hero */
+}
+
+#home-hero-section h1,
+#home-hero-section p {
+    text-align: left; /* Explicitly set for children if needed, though inherited usually works */
+}
+
+#home-hero-section .hero-buttons {
+    margin-top: 20px;
+    text-align: left; /* Override .hero .hero-buttons text-align: center */
+}
+
+/* General .hero h1 and .hero p if needed for other pages,
+   but #home-hero-section h1/p will take precedence for the homepage hero */
 .hero h1 {
-    font-size: 3em; /* Existing font-size */
-    margin-bottom: 0.5em; /* Existing margin */
-    color: #333333; /* Ensure text color has good contrast, #333 is fine */
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    color: #333333;
 }
 
 .hero p {
-    font-size: 1.2em; /* Existing font-size */
-    margin-bottom: 1.5em; /* Existing margin */
-    color: #555555; /* Ensure text color has good contrast, #555 is fine */
+    font-size: 1.2em;
+    margin-bottom: 1.5em;
+    color: #555555;
 }
 
-/* Container for hero buttons on index.html */
-.hero-buttons {
-    margin-top: 20px; /* Space above the buttons */
-    text-align: center; /* Ensure buttons are centered if they are inline-block */
-}
+/* This rule was for .hero .hero-buttons, now specific to #home-hero-section */
+/* .hero-buttons { ... } */
 
-/* Base style for hero buttons */
+
 .hero-button {
     padding: 12px 24px;
-    margin: 0 10px; /* Spacing between buttons */
+    margin: 0 10px 0 0; /* Adjust margin for left alignment, remove left margin for the first button */
     text-decoration: none;
     display: inline-block;
     border-radius: 5px;
     font-weight: bold;
-    font-family: 'Open Sans', 'Lato', sans-serif; /* Ensure font consistency */
+    font-family: 'Open Sans', 'Lato', sans-serif;
     font-size: 1em;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    border: 2px solid transparent; /* Base border for smooth transition on secondary */
+    border: 2px solid transparent;
 }
 
-/* Primary hero button (Shop Collection) */
+/* If only two buttons and they should stack on smaller screens, or other specific alignment,
+   flexbox on .hero-buttons might be better. For simple left align, text-align: left is fine. */
+#home-hero-section .hero-button:first-child {
+    margin-left: 0; /* Ensure the first button aligns to the very left of the padded container */
+}
+
+
 .hero-button.primary {
     background-color: #915930;
     color: #ffffff;
-    border-color: #915930; /* Match background or make transparent if no border desired */
+    border-color: #915930;
 }
 
 .hero-button.primary:hover {
-    background-color: #7a4a27; /* Darker shade for hover */
+    background-color: #7a4a27;
     color: #ffffff;
     border-color: #7a4a27;
-    text-decoration: none; /* Remove underline on hover for buttons */
+    text-decoration: none;
 }
 
-/* Secondary hero button (Our Process) */
 .hero-button.secondary {
     background-color: #ffffff;
     color: #915930;
@@ -152,99 +169,109 @@ nav ul li a.active {
 }
 
 .hero-button.secondary:hover {
-    background-color: #f8f9fa; /* Slightly different background on hover */
-    color: #7a4a27; /* Darker text/border on hover */
+    background-color: #f8f9fa;
+    color: #7a4a27;
     border-color: #7a4a27;
-    text-decoration: none; /* Remove underline on hover for buttons */
+    text-decoration: none;
 }
 
 
-/* Generic Content Sections */
+/* Generic Content Sections - MODIFIED FOR FULL WIDTH & NO VERTICAL MARGINS */
 section {
-    padding: 2em; /* Sufficient padding */
-    margin: 20px auto; /* Sufficient margin */
-    max-width: 960px;
-    background-color: #ffffff; /* White background for content sections for contrast with body */
-    border-radius: 5px; /* Optional: slight rounding for sections */
-    box-shadow: 0 0 10px rgba(0,0,0,0.05); /* Optional: subtle shadow for sections */
+    padding-top: 2em;
+    padding-bottom: 2em;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0; /* Removed vertical margin */
+    margin-bottom: 0; /* Removed vertical margin */
+    max-width: none;
+    background-color: #ffffff;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Exclude .hero from generic section styling if it has its own distinct background */
+/* Specific styling for section.hero for full-width & NO VERTICAL MARGINS */
+/* This rule applies to all elements with class .hero that are also sections */
 section.hero {
-    background-color: #E5D9CE; /* Overriding generic section white background */
-    box-shadow: none; /* Hero typically doesn't have a card shadow */
+    padding-top: 4em; /* Retain specific vertical padding */
+    padding-bottom: 4em; /* Retain specific vertical padding */
+    padding-left: 0; /* Base for full-width, overridden by #home-hero-section for specific padding */
+    padding-right: 0; /* Base for full-width, overridden by #home-hero-section for specific padding */
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0; /* Hero section often is at the very top, already 0 */
+    margin-bottom: 0; /* Removed space below hero */
+    max-width: none;
+    background-color: #E5D9CE; /* Specific background */
+    box-shadow: none;
+    border-radius: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 
 section h2 {
-    /* color: #333333; Inherited */
     margin-bottom: 1em;
 }
 
 /* Shop Page Specific Styles */
+/* .products is a <section> and will inherit full-width & no vertical margins from 'section' */
 .products {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 1em 0;
-    background-color: transparent; /* products section doesn't need its own bg if items have it */
-    box-shadow: none; /* No shadow for the container if items have it */
+    padding-top: 1em; /* Keep specific vertical padding */
+    padding-bottom: 1em; /* Keep specific vertical padding */
+    background-color: transparent; /* Keep transparent, body bg will show */
 }
 
 .product-item {
-    border: 1px solid #ced4da; /* Light gray border, consistent with inputs */
-    border-radius: 5px; /* Consistent border-radius */
-    padding: 1.5em; /* Increased padding */
-    margin: 1em;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 1.5em;
+    margin: 1em; /* This margin is for items within the section, not between sections */
     width: calc(33.333% - 2em);
     min-width: 250px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Softer shadow */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     text-align: center;
-    background-color: #ffffff; /* Ensure product items are white */
+    background-color: #ffffff;
 }
 
 .product-item .img_placeholder {
     width: 100%;
     max-width: 200px;
     height: 150px;
-    background-color: #e9ecef; /* Consistent light gray */
+    background-color: #e9ecef;
     text-align: center;
     line-height: 150px;
     margin: 0 auto 1em auto;
     display: block;
-    border-radius: 4px; /* Optional rounding for placeholder */
+    border-radius: 4px;
 }
 
 .product-item h3 {
     font-size: 1.5em;
     margin-bottom: 0.5em;
-    /* color: #333333; Inherited */
 }
 
-.product-item p { /* Used for price */
+.product-item p {
     font-size: 1.2em;
-    color: #007bff; /* Price in accent color */
+    color: #007bff;
     font-weight: bold;
     margin-bottom: 1em;
 }
 
-/* product-item button will inherit global button styles */
-/* .product-item button { ... } */
-
-
 /* Contact Page Specific Styles */
-.contact-form { /* This is a section, so it gets base section styling */
-    max-width: 600px;
-    margin: 20px auto; /* Keep auto margins for centering */
-    /* padding: 2em; Inherited from section */
-    /* border: 1px solid #ddd; Overridden by section's box-shadow or remove if redundant */
-    /* border-radius: 5px; Inherited */
-    /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); Inherited */
-    /* background-color: #fff; Inherited */
+/* .contact-form is a <section> and will inherit full-width & no vertical margins */
+.contact-form {
+    /* Styles related to margin/padding are handled by 'section' rule */
 }
 
-.contact-form form { /* Style the form element itself if needed, for now, rely on section */
-    padding: 1em; /* Add some padding inside the form if section has bg */
+.contact-form form {
+    padding: 1em;
+    max-width: 600px;
+    margin: 0 auto; /* Center the form within the full-width section */
 }
 
 
@@ -252,43 +279,37 @@ section h2 {
     display: block;
     margin-bottom: 0.5em;
     font-weight: bold;
-    /* color: #333333; Inherited */
 }
 
 .contact-form input[type="text"],
 .contact-form input[type="email"],
 .contact-form textarea {
     width: 100%;
-    padding: 10px; /* Updated padding */
+    padding: 10px;
     margin-bottom: 1em;
-    border: 1px solid #ced4da; /* Light gray border */
-    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ced4da;
+    border-radius: 5px;
     box-sizing: border-box;
-    font-family: 'Open Sans', 'Lato', sans-serif; /* Match body font */
+    font-family: 'Open Sans', 'Lato', sans-serif;
     font-size: 1em;
-    background-color: #fff; /* Ensure input background is white */
-    color: #333333; /* Ensure input text color is dark gray */
+    background-color: #fff;
+    color: #333333;
 }
 
 .contact-form input[type="text"]::placeholder,
 .contact-form input[type="email"]::placeholder,
 .contact-form textarea::placeholder {
-    color: #6c757d; /* Placeholder text color */
+    color: #6c757d;
 }
-
 
 .contact-form textarea {
     min-height: 150px;
     resize: vertical;
 }
 
-/* contact-form button[type="submit"] will inherit global button styles */
-/* .contact-form button[type="submit"] { ... } */
-
-.contact-info { /* This is a section */
+/* .contact-info is a <section> and will inherit full-width & no vertical margins */
+.contact-info {
     text-align: center;
-    /* margin-top: 0; Inherited from section */
-    /* padding: 1em 0; Inherited from section */
 }
 
 .contact-info h2 {
@@ -302,11 +323,10 @@ section h2 {
 }
 
 /* About Page Specific Styles */
-.team-section { /* This is a section */
-    /* margin-top: 0; Inherited */
-    /* padding: 2em; Inherited */
-    background-color: #f9f9f9; /* Keep slightly different bg for team if desired, or align with section bg */
-    /* border-radius: 5px; Inherited */
+/* .team-section is a <section> and will inherit full-width & no vertical margins */
+.team-section {
+    background-color: #f9f9f9; /* Keep specific background for this full-width band */
+    text-align: center;
 }
 
 .team-section h2 {
@@ -322,7 +342,6 @@ section h2 {
 .team-member b {
     display: block;
     font-size: 1.3em;
-    /* color: #333333; Inherited */
     margin-bottom: 0.25em;
 }
 
@@ -337,18 +356,19 @@ section h2 {
 
 /* Footer */
 footer {
-    background-color: #343a40; /* Dark gray/charcoal background */
-    color: #f8f9fa; /* Light/off-white text */
+    background-color: #343a40;
+    color: #f8f9fa;
     text-align: center;
     padding: 2em 0;
     width: 100%;
-    margin-top: auto; /* Helps push footer down if content is short */
+    margin-top: auto; /* This helps push footer down, but with no section margins, it might directly touch last section */
+    box-sizing: border-box;
 }
-footer a { /* Ensure footer links are also light colored */
+footer a {
     color: #f8f9fa;
-    text-decoration: underline; /* Underline footer links for clarity */
+    text-decoration: underline;
 }
 footer a:hover {
-    color: #007bff; /* Accent color on hover for footer links */
+    color: #007bff;
     text-decoration: none;
 }
