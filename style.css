@@ -135,19 +135,18 @@ nav ul li a.active {
     /* max-width: 40%; If using flex-grow/shrink instead of basis */
 }
 
+#home-hero-section .hero-image-column img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Removes extra space below inline images */
+    border-radius: 8px; /* Optional: adds slightly rounded corners to the image */
+}
+
 #home-hero-section .hero-text-column {
     flex-basis: 55%;
     /* max-width: 55%; If using flex-grow/shrink instead of basis */
 }
 
-/* Placeholder styling is inline in HTML for now. If it were a real image: */
-/*
-#home-hero-section .hero-image-column img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-*/
 
 /* General .hero h1 and .hero p styling */
 .hero h1 {
