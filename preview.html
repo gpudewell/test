@@ -26,6 +26,17 @@
 
         <section>
             <div class="content-wrapper">
+                <h2>Selection Controls</h2>
+                <div style="margin-bottom: 10px;">
+                    <label for="toleranceSlider">Selection Tolerance: <span id="toleranceValueDisplay">20</span></label>
+                    <input type="range" id="toleranceSlider" name="toleranceSlider" min="0" max="100" value="20" style="width: 200px; vertical-align: middle; margin-left: 5px;">
+                </div>
+                <button id="clearSelectionBtn">Clear Selection</button>
+            </div>
+        </section>
+
+        <section>
+            <div class="content-wrapper">
                 <h2>Upload Your Furniture Image</h2>
                 <input type="file" id="imageLoader" name="imageLoader" accept="image/*">
             </div>
