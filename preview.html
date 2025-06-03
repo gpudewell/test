@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furniture Preview - My Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="preview.html" class="active">Preview</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="content-wrapper">
+                <h1>Furniture Preview</h1>
+            </div>
+        </section>
+
+        <section>
+            <div class="content-wrapper">
+                <h2>Upload Your Furniture Image</h2>
+                <input type="file" id="imageLoader" name="imageLoader" accept="image/*">
+            </div>
+        </section>
+
+        <section>
+            <div class="content-wrapper">
+                <h2>Preview</h2>
+                <canvas id="imageCanvas" style="border:1px solid #ccc; width:100%; max-width:600px; height:auto;"></canvas>
+                <!-- We'll set a more dynamic width/height via JS based on the image -->
+            </div>
+        </section>
+
+        <section>
+            <div class="content-wrapper">
+                <h2>Choose Color</h2>
+                <div id="colorSelector">
+                    <!-- Color swatches will be added here later -->
+                    <p>(Color selection tools will appear here)</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Your Company</p>
+    </footer>
+
+    <!-- We will link to preview.js later -->
+    <script src="preview.js"></script>
+</body>
+</html>

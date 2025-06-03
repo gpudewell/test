@@ -448,3 +448,59 @@ footer a:hover {
     }
     */
 }
+
+/* Preview Page Specific Styles */
+
+/* Style the file input button */
+#imageLoader {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: block; /* Make it block to control width/margin if needed */
+}
+
+/* Canvas Styling */
+#imageCanvas {
+    display: block; /* Allows margin auto to work for centering */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f0f0f0; /* Light background for empty canvas */
+    max-width: 100%; /* Ensure it's responsive */
+    /* Height is set by JS, border is inline for now */
+}
+
+/* Color Selector Styling */
+#colorSelector {
+    padding: 10px;
+    margin-top: 10px;
+    text-align: center; /* Center the swatches */
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    border: 1px solid #eee;
+}
+
+#colorSelector p { /* Style for the placeholder text if no JS/swatches yet */
+    color: #777;
+}
+
+/* Individual color swatch styling is done via JS,
+   but we can add a general style for any future static elements if needed */
+#colorSelector .swatch-container { /* Example if we wrap swatches */
+    display: inline-block;
+    margin: 5px;
+}
+
+/* Ensure sections on preview page use content-wrapper correctly for alignment */
+/* The HTML structure already uses <section><div class="content-wrapper">,
+   so existing .content-wrapper styles should apply.
+   We can add specific margin/padding to sections on this page if needed. */
+
+/* Example: Add some bottom margin to sections on preview page for spacing */
+body > main > section { /* Targeting direct children sections of main */
+    margin-bottom: 20px;
+}
+
+/* Hero section styling for preview.html (if different from others) */
+/* For now, it uses the generic .hero and .content-wrapper h1 styles */
+/* If specific styling for preview page hero is needed, it can be added here */
