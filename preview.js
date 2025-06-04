@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageLoader = document.getElementById('imageLoader');
     const imageCanvas = document.getElementById('imageCanvas');
     const colorSelector = document.getElementById('colorSelector');
-    const ctx = imageCanvas.getContext('2d');
+    const ctx = imageCanvas ? imageCanvas.getContext('2d') : null;
 
     const toleranceSlider = document.getElementById('toleranceSlider');
     const toleranceValueDisplay = document.getElementById('toleranceValueDisplay');
@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let processingSelection = false;
     let selectionTolerance = 20;
 
-    // Initialize tolerance value from slider if elements exist
     if (toleranceSlider) {
         selectionTolerance = parseInt(toleranceSlider.value, 10);
     }
@@ -27,17 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
          toleranceValueDisplay.textContent = toleranceSlider.value;
     }
 
-    // Updated colorsMatch to use the global selectionTolerance
     function colorsMatch(color1, color2) {
         if (color1.length !== 4 || color2.length !== 4) return false;
-        // Check transparency - avoid selecting fully transparent areas or matching them
-        if (color1[3] < 30 || (color2.length === 4 && color2[3] < 30 && color1[3] < 30)) {
-             // If both target and current are very transparent, consider them matching (or not, depending on desired behavior)
-             // For now, if the initial target pixel (color2) is very transparent, we don't select.
-             // If color1 (current pixel during flood fill) is very transparent, don't match it to an opaque target.
-            if (color2[3] < 30 && color1[3] < 30) return true; // both transparent, can match
-            if (color1[3] < 30) return false; // current is transparent, target is not, no match
-        }
+        // Check transparency - avoid selecting fully transparent areas or matching them.
+        if (color2[3] < 30) return false; // Do not match if target is too transparent
+        if (color1[3] < 30 && color2[3] >=30) return false; // Current is transparent but target is not.
 
         for (let i = 0; i < 3; i++) {
             if (Math.abs(color1[i] - color2[i]) > selectionTolerance) {
@@ -59,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function applyColorToCanvas() {
-        if (!currentImage) return;
+        if (!currentImage || !ctx) return;
         ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
         ctx.drawImage(currentImage, 0, 0, imageCanvas.width, imageCanvas.height);
         if (!selectedRegionMask) return;
@@ -80,134 +73,200 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.putImageData(canvasImageData, 0, 0);
     }
 
-    imageLoader.addEventListener('change', function(e) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            currentImage = new Image();
-            currentImage.onload = function() {
-                const maxWidth = 600;
-                let width = currentImage.width;
-                let height = currentImage.height;
-                if (width > maxWidth) {
-                    height = (maxWidth / width) * height;
-                    width = maxWidth;
+    if (imageLoader) {
+        imageLoader.addEventListener('change', function(e) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentImage = new Image();
+                currentImage.onload = function() {
+                    if (!imageCanvas || !ctx) return;
+                    const maxWidth = 600;
+                    let width = currentImage.width;
+                    let height = currentImage.height;
+                    if (width > maxWidth) {
+                        height = (maxWidth / width) * height;
+                        width = maxWidth;
+                    }
+                    imageCanvas.width = width;
+                    imageCanvas.height = height;
+                    ctx.drawImage(currentImage, 0, 0, width, height);
+                    selectedRegionMask = null;
                 }
-                imageCanvas.width = width;
-                imageCanvas.height = height;
-                ctx.drawImage(currentImage, 0, 0, width, height);
+                currentImage.src = event.target.result;
+            }
+            if (e.target.files[0]) {
+                reader.readAsDataURL(e.target.files[0]);
+            } else {
+                if (ctx) ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+                if (imageCanvas) {
+                    imageCanvas.width = 600;
+                    imageCanvas.height = 300;
+                }
+                currentImage = null;
                 selectedRegionMask = null;
             }
-            currentImage.src = event.target.result;
-        }
-        if (e.target.files[0]) {
-            reader.readAsDataURL(e.target.files[0]);
-        } else {
-            ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-            imageCanvas.width = 600;
-            imageCanvas.height = 300;
-            currentImage = null;
-            selectedRegionMask = null;
-        }
-    });
+        });
+    }
 
     function selectRegion(startX, startY) {
-        if (!currentImage || processingSelection) return;
-        processingSelection = true;
-        ctx.clearRect(0,0,imageCanvas.width, imageCanvas.height);
-        ctx.drawImage(currentImage, 0,0, imageCanvas.width, imageCanvas.height);
-        const originalImageData = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height);
-        const targetColor = getPixelColor(originalImageData, startX, startY);
+        // Log initial state (already added in previous steps)
+        console.log("selectRegion called. StartX:", startX, "StartY:", startY, "currentImage exists:", !!currentImage, "processingSelection flag:", processingSelection);
 
-        if (targetColor[0] === -1 || targetColor[3] < 30) { // Clicked out of bounds or too transparent
-            processingSelection = false;
-            applyColorToCanvas(); // Redraw original image if no valid selection start
+        if (!currentImage || !ctx) {
+            console.log("selectRegion: Exiting early - no image or canvas context.");
+            // processingSelection should be false if this is the entry point from click handler
+            return;
+        }
+        // This check handles calls if the flag was somehow true upon entry
+        if (processingSelection) {
+            console.log("selectRegion: Exiting early - selection already in progress (internal check).");
             return;
         }
 
-        let currentSelectionMask = ctx.createImageData(imageCanvas.width, imageCanvas.height);
-        const visited = new Uint8Array(originalImageData.width * originalImageData.height);
-        const queue = [[startX, startY]];
-        visited[startY * originalImageData.width + startX] = 1;
-        let head = 0;
-        while(head < queue.length) {
-            const [x, y] = queue[head++];
-            const currentColorOnImage = getPixelColor(originalImageData, x, y);
-            if (colorsMatch(currentColorOnImage, targetColor)) { // colorsMatch now uses selectionTolerance
-                const offset = (y * currentSelectionMask.width + x) * 4;
-                currentSelectionMask.data[offset + 3] = 150; // Mark in mask with alpha
-                const neighbors = [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]];
-                for (const [nx, ny] of neighbors) {
-                    if (nx >= 0 && nx < originalImageData.width && ny >= 0 && ny < originalImageData.height &&
-                        !visited[ny * originalImageData.width + nx]) {
-                        visited[ny * originalImageData.width + nx] = 1;
-                        // Check color of neighbor before adding to queue to ensure it's part of the region
-                        const neighborColorOnImage = getPixelColor(originalImageData, nx, ny);
-                        if (colorsMatch(neighborColorOnImage, targetColor)) {
-                           queue.push([nx, ny]);
+        processingSelection = true; // Set flag as we are starting the process
+        console.log("selectRegion: processingSelection set to true.");
+
+        try {
+            // Main selection logic previously in selectRegion
+            // Ensure canvas shows original image before getting data
+            ctx.clearRect(0,0,imageCanvas.width, imageCanvas.height);
+            ctx.drawImage(currentImage, 0,0, imageCanvas.width, imageCanvas.height);
+            const originalImageData = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height);
+            const targetColor = getPixelColor(originalImageData, startX, startY);
+
+            if (targetColor[0] === -1 || targetColor[3] < 30) { // Target is out of bounds or too transparent
+                console.log("selectRegion: Exiting (from try block) - targetColor is out of bounds or too transparent. TargetColor Alpha:", targetColor[3]);
+                // applyColorToCanvas(); // Redraw original image state. This will be handled by finally if needed.
+                return; // The 'finally' block will still execute
+            }
+
+            let currentSelectionMask = ctx.createImageData(imageCanvas.width, imageCanvas.height);
+            const visited = new Uint8Array(originalImageData.width * originalImageData.height);
+            const queue = [[startX, startY]];
+            visited[startY * originalImageData.width + startX] = 1;
+            let head = 0;
+            while(head < queue.length) {
+                const [x, y] = queue[head++];
+                const currentColorOnImage = getPixelColor(originalImageData, x, y);
+                if (colorsMatch(currentColorOnImage, targetColor)) { // colorsMatch uses selectionTolerance
+                    const offset = (y * currentSelectionMask.width + x) * 4;
+                    currentSelectionMask.data[offset + 3] = 150; // Mark in mask with alpha
+                    const neighbors = [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]];
+                    for (const [nx, ny] of neighbors) {
+                        if (nx >= 0 && nx < originalImageData.width && ny >= 0 && ny < originalImageData.height &&
+                            !visited[ny * originalImageData.width + nx]) {
+                            visited[ny * originalImageData.width + nx] = 1;
+                            // Check color of neighbor before adding to queue to ensure it's part of the region
+                            const neighborColorOnImage = getPixelColor(originalImageData, nx, ny);
+                            if (colorsMatch(neighborColorOnImage, targetColor)) {
+                               queue.push([nx, ny]);
+                            }
                         }
                     }
                 }
             }
+            selectedRegionMask = currentSelectionMask;
+            console.log("selectRegion: Mask generation complete. Queue length:", queue.length);
+
+            // Call applyColorToCanvas after successful selection mask generation
+            applyColorToCanvas();
+
+        } finally {
+            // This block will execute whether the try block completes normally or exits due to an error or return statement.
+            console.log("selectRegion: (in finally block) processingSelection is being set to false.");
+            processingSelection = false;
         }
-        selectedRegionMask = currentSelectionMask;
-        processingSelection = false;
-        applyColorToCanvas();
     }
 
-    imageCanvas.addEventListener('click', function(event) {
-        if (!currentImage || processingSelection) return;
-        const rect = imageCanvas.getBoundingClientRect();
-        const canvasX = event.clientX - rect.left;
-        const canvasY = event.clientY - rect.top;
-        const imageX = Math.floor(canvasX * (imageCanvas.width / rect.width));
-        const imageY = Math.floor(canvasY * (imageCanvas.height / rect.height));
-        selectRegion(imageX, imageY);
-    });
+    if (imageCanvas) {
+        imageCanvas.addEventListener('click', function(event) {
+            console.log("Canvas clicked!");
 
-    colorSelector.innerHTML = '';
-    predefinedColors.forEach(color => {
-        const swatch = document.createElement('div');
-        swatch.style.backgroundColor = color;
-        swatch.style.width = '30px';
-        swatch.style.height = '30px';
-        swatch.style.borderRadius = '50%';
-        swatch.style.display = 'inline-block';
-        swatch.style.margin = '5px';
-        swatch.style.cursor = 'pointer';
-        swatch.style.border = '2px solid #eee';
-        if (color === selectedColor) {
-            swatch.style.borderColor = '#000';
-        }
-        swatch.addEventListener('click', function() {
-            selectedColor = color;
-            document.querySelectorAll('#colorSelector div').forEach(s => s.style.borderColor = '#eee');
-            swatch.style.borderColor = '#000';
-            applyColorToCanvas();
+            if (!currentImage) {
+                console.log('No image loaded. Click ignored.');
+                return;
+            }
+            if (processingSelection) {
+                console.log('Selection already in progress (click listener). Click ignored.');
+                return;
+            }
+
+            const rect = imageCanvas.getBoundingClientRect();
+            const canvasX = event.clientX - rect.left;
+            const canvasY = event.clientY - rect.top;
+
+            const bufferWidth = imageCanvas.width;
+            const bufferHeight = imageCanvas.height;
+            const displayWidth = rect.width;
+            const displayHeight = rect.height;
+
+            const imageX = Math.floor(canvasX * (bufferWidth / displayWidth));
+            const imageY = Math.floor(canvasY * (bufferHeight / displayHeight));
+
+            console.log("Coordinate Calculation Details:", {
+                clientX: event.clientX,
+                clientY: event.clientY,
+                canvasRectLeft: rect.left,
+                canvasRectTop: rect.top,
+                canvasX: canvasX,
+                canvasY: canvasY,
+                bufferWidth: bufferWidth,
+                bufferHeight: bufferHeight,
+                displayWidth: displayWidth,
+                displayHeight: displayHeight,
+                imageX: imageX,
+                imageY: imageY
+            });
+
+            console.log("Calling selectRegion from click listener...");
+            selectRegion(imageX, imageY);
         });
-        colorSelector.appendChild(swatch);
-    });
+        console.log("Canvas click listener attached successfully.");
+    } else {
+        console.error("ERROR: imageCanvas element not found during DOMContentLoaded!");
+    }
 
-    // Event listener for tolerance slider
+    if (colorSelector) {
+        colorSelector.innerHTML = '';
+        predefinedColors.forEach(color => {
+            const swatch = document.createElement('div');
+            swatch.style.backgroundColor = color;
+            swatch.style.width = '30px';
+            swatch.style.height = '30px';
+            swatch.style.borderRadius = '50%';
+            swatch.style.display = 'inline-block';
+            swatch.style.margin = '5px';
+            swatch.style.cursor = 'pointer';
+            swatch.style.border = '2px solid #eee';
+            if (color === selectedColor) {
+                swatch.style.borderColor = '#000';
+            }
+            swatch.addEventListener('click', function() {
+                selectedColor = color;
+                if (document) document.querySelectorAll('#colorSelector div').forEach(s => s.style.borderColor = '#eee');
+                swatch.style.borderColor = '#000';
+                applyColorToCanvas();
+            });
+            colorSelector.appendChild(swatch);
+        });
+    }
+
     if (toleranceSlider && toleranceValueDisplay) {
         toleranceSlider.addEventListener('input', function() {
             selectionTolerance = parseInt(this.value, 10);
             toleranceValueDisplay.textContent = this.value;
-            // Note: Changing tolerance doesn't automatically re-select.
-            // User needs to click again to select with new tolerance.
         });
     }
 
-    // Event listener for Clear Selection button
     if (clearSelectionBtn) {
         clearSelectionBtn.addEventListener('click', function() {
             if (selectedRegionMask) {
                 selectedRegionMask = null;
-                // Redraw the original image without any tint or mask
-                if (currentImage) {
+                if (currentImage && ctx) {
                     ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
                     ctx.drawImage(currentImage, 0, 0, imageCanvas.width, imageCanvas.height);
                 }
-                console.log("Selection cleared.");
+                console.log("Selection cleared via button.");
             }
         });
     }
